@@ -18,10 +18,31 @@ struct ContentView: View {
     var body: some View {
         ZStack {
             ARViewContainer(properties: $properties).edgesIgnoringSafeArea(.all)
-                .onTapGesture { properties.tapped = true; properties.object += 1 }
+//                .onTapGesture { properties.tapped = true }
+            VStack {
+                Spacer()
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack() {
+                        ForEach(1...5, id:\.self) { i in
+                            Button {
+                                properties.object = i
+                            } label: {
+                                RoundedRectangle(cornerRadius: 20)
+                                    .frame(width: 80, height: 80)
+                                    .padding(.leading, 1)
+                                    .overlay(Text("aaa"))
+                            }
+                        }
+                    }
+                }
+                Button("3D Text") {
+                    properties.tapped = true
+                }
+                .padding()
+                .buttonStyle(.borderedProminent)
+                
+            }
         }
-
-
     }
 }
 
@@ -29,15 +50,15 @@ struct ARViewContainer: UIViewRepresentable {
     
     @Binding var properties: (tapped: Bool, object: Int)
     @State var currentPos: SIMD3<Float> = SIMD3()
-    var model = 1
-
+    
+    
     func makeUIView(context: Context) -> ARView {
         
         let arView = ARView(frame: .zero)
         let session = arView.session
         let focusSquare = FocusEntity(on: arView, focus: .classic)
         currentPos = focusSquare.position
-
+        
         
         // Overlay while scanning the scene
         let coachingOverlay = ARCoachingOverlayView()
@@ -46,18 +67,24 @@ struct ARViewContainer: UIViewRepresentable {
         coachingOverlay.goal = .horizontalPlane
         arView.addSubview(coachingOverlay)
         
-//        let sceneAnchor = try! Experience.loadEmpty()
-//        sceneAnchor.position = currentPos
-//        arView.scene.anchors.append(sceneAnchor)
-
+        //        let sceneAnchor = try! Experience.loadEmpty()
+        //        sceneAnchor.position = currentPos
+        //        arView.scene.anchors.append(sceneAnchor)
+        
         return arView
         
     }
     
     func updateUIView(_ arView: ARView, context: Context) {
-
         if properties.tapped {
-            
+            place(arView)
+            properties.tapped = false
+        }
+        
+    }
+    
+    func place(_ arView: ARView) {
+        
             switch properties.object {
             case 1:
                 let choosenObj = try! Experience.load_1()
@@ -83,22 +110,18 @@ struct ARViewContainer: UIViewRepresentable {
                 let choosenObj = try! Experience.load_5()
                 choosenObj.position = currentPos
                 arView.scene.anchors.append(choosenObj)
-                
+                            
             default:
                 let choosenObj = try! Experience.loadEmpty()
                 choosenObj.position = currentPos
                 arView.scene.anchors.append(choosenObj)
-            }
+                                
             
-
-
-        }
-        
+            }
         
     }
-
-    
 }
+
 
 
 
