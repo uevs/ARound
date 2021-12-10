@@ -12,21 +12,24 @@ import FocusEntity
 
 struct ContentView: View {
     
-    @State var tapped = false
+    @State var properties = (tapped: false, object: 0)
+    
     
     var body: some View {
-        ARViewContainer(tapped: $tapped).edgesIgnoringSafeArea(.all)
-            .onTapGesture {
-                tapped.toggle()
-            }
+        ZStack {
+            ARViewContainer(properties: $properties).edgesIgnoringSafeArea(.all)
+                .onTapGesture { properties.tapped = true; properties.object += 1 }
+        }
+
 
     }
 }
 
 struct ARViewContainer: UIViewRepresentable {
     
-    @Binding var tapped: Bool
+    @Binding var properties: (tapped: Bool, object: Int)
     @State var currentPos: SIMD3<Float> = SIMD3()
+    var model = 1
 
     func makeUIView(context: Context) -> ARView {
         
@@ -42,6 +45,10 @@ struct ARViewContainer: UIViewRepresentable {
         coachingOverlay.session = session
         coachingOverlay.goal = .horizontalPlane
         arView.addSubview(coachingOverlay)
+        
+//        let sceneAnchor = try! Experience.loadEmpty()
+//        sceneAnchor.position = currentPos
+//        arView.scene.anchors.append(sceneAnchor)
 
         return arView
         
@@ -49,14 +56,42 @@ struct ARViewContainer: UIViewRepresentable {
     
     func updateUIView(_ arView: ARView, context: Context) {
 
-        if tapped {
+        if properties.tapped {
             
-            // Load the scene from the "Experience" Reality File
-            let sceneAnchor = try! Experience.loadTest()
-            sceneAnchor.position = currentPos
+            switch properties.object {
+            case 1:
+                let choosenObj = try! Experience.load_1()
+                choosenObj.position = currentPos
+                arView.scene.anchors.append(choosenObj)
+                
+            case 2:
+                let choosenObj = try! Experience.load_2()
+                choosenObj.position = currentPos
+                arView.scene.anchors.append(choosenObj)
+                
+            case 3:
+                let choosenObj = try! Experience.load_3()
+                choosenObj.position = currentPos
+                arView.scene.anchors.append(choosenObj)
+                
+            case 4:
+                let choosenObj = try! Experience.load_4()
+                choosenObj.position = currentPos
+                arView.scene.anchors.append(choosenObj)
+                
+            case 5:
+                let choosenObj = try! Experience.load_5()
+                choosenObj.position = currentPos
+                arView.scene.anchors.append(choosenObj)
+                
+            default:
+                let choosenObj = try! Experience.loadEmpty()
+                choosenObj.position = currentPos
+                arView.scene.anchors.append(choosenObj)
+            }
             
-            // Add the scene anchor to the scene
-            arView.scene.anchors.append(sceneAnchor)
+
+
         }
         
         
@@ -65,9 +100,7 @@ struct ARViewContainer: UIViewRepresentable {
     
 }
 
-func addObject(_ arView: ARView) {
-    
-}
+
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
