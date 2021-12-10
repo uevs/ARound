@@ -28,9 +28,9 @@ struct ContentView: View {
                                 properties.object = i
                             } label: {
                                 RoundedRectangle(cornerRadius: 20)
-                                    .frame(width: 80, height: 80)
-                                    .padding(.leading, 1)
-                                    .overlay(Text("aaa"))
+                                    .frame(width: 100, height: 100)
+                                    .padding(.horizontal, 1)
+                                    .overlay(Text("\(i)").foregroundColor(.white))
                             }
                         }
                     }
@@ -77,8 +77,8 @@ struct ARViewContainer: UIViewRepresentable {
     
     func updateUIView(_ arView: ARView, context: Context) {
         if properties.tapped {
-            place(arView)
             properties.tapped = false
+            place(arView)
         }
         
     }
