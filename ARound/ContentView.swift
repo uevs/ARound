@@ -12,7 +12,8 @@ import FocusEntity
 
 struct ContentView: View {
     
-    @State var properties = (tapped: false, object: 0)
+    @State var properties = (tapped: false, object: 0, text: "text")
+    @FocusState private var fieldIsFocused: Bool
     
     
     var body: some View {
@@ -20,6 +21,8 @@ struct ContentView: View {
             ARViewContainer(properties: $properties).edgesIgnoringSafeArea(.all)
             VStack {
                 Spacer()
+                TextField("text", text: $properties.text, prompt: Text("aaa"))
+                    .focused($fieldIsFocused)
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack() {
                         ForEach(1...5, id:\.self) { i in
@@ -38,7 +41,8 @@ struct ContentView: View {
                     .padding()
                 }
                 Button {
-                    //do
+                    properties.object = 6
+                    properties.tapped.toggle()
                 } label: {
                     Text("3D Text")
                         .font(.headline)
@@ -50,6 +54,15 @@ struct ContentView: View {
                 .padding()
                 .buttonStyle(.borderedProminent)
                 
+ 
+                
+            }
+            .toolbar {
+                ToolbarItemGroup(placement: .keyboard) {
+                    Button("Done") {
+                        fieldIsFocused = false
+                    }
+                }
             }
         }
     }
@@ -57,7 +70,7 @@ struct ContentView: View {
 
 struct ARViewContainer: UIViewRepresentable {
     
-    @Binding var properties: (tapped: Bool, object: Int)
+    @Binding var properties: (tapped: Bool, object: Int, text: String)
     @State var currentPos: SIMD3<Float> = SIMD3()
         
     func makeUIView(context: Context) -> ARView {
@@ -115,7 +128,21 @@ struct ARViewContainer: UIViewRepresentable {
                 let choosenObj = try! Experience.load_5()
                 choosenObj.position = currentPos
                 arView.scene.anchors.append(choosenObj)
-                            
+                
+            case 6:
+                let choosenObj = try! Experience.loadText()
+                let textEntity: Entity = choosenObj.text!.children[0].children[0]
+                var textModelComponent: ModelComponent = (textEntity.components[ModelComponent.self])!
+                textModelComponent.mesh = .generateText(properties.text,
+                                                        extrusionDepth: 0.03,
+                                                        font: .boldSystemFont(ofSize: 0.1),
+                                                        containerFrame: CGRect.zero,
+                                                     alignment: .center,
+                                                 lineBreakMode: .byCharWrapping)
+                
+                choosenObj.children[0].children[0].components.set(textModelComponent)
+                choosenObj.position = currentPos
+                arView.scene.anchors.append(choosenObj)
             default:
                 let choosenObj = try! Experience.loadEmpty()
                 choosenObj.position = currentPos
