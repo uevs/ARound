@@ -89,30 +89,36 @@ struct PlacingView: View {
     
     var body: some View {
         
-        
         if properties.object == 6 {
             VStack {
+
                 Spacer()
                 TextField("Text", text: $properties.text, prompt: Text("Choose your text"))
                     .textFieldStyle(.roundedBorder)
                     .padding()
                     .focused($fieldIsFocused)
-                    .onAppear(perform: {fieldIsFocused = true})
                 
                 Button("Done") {
                     fieldIsFocused = false
                 }
                 .buttonStyle(.borderedProminent)
             }
-
-         
                 
         } else {
+            VStack {
+                
             Text("Tap to place your object!")
-                .onTapGesture {
-                    properties.tapped = true
-                    properties.selecting = true
-                }
+                .font(Font.system(size: 50).bold())
+                .foregroundColor(.white)
+                .padding()
+
+            Spacer()
+            }
+            .contentShape(Rectangle())
+            .onTapGesture {
+                properties.tapped = true
+                properties.selecting = true
+            }
         }
         
         
@@ -140,9 +146,9 @@ struct ARViewContainer: UIViewRepresentable {
         coachingOverlay.goal = .horizontalPlane
         arView.addSubview(coachingOverlay)
         
-//        let sceneAnchor = try! Experience.loadEmpty()
-//        sceneAnchor.position = currentPos
-//        arView.scene.anchors.append(sceneAnchor)
+        let sceneAnchor = try! Experience.loadEmpty()
+        sceneAnchor.position = currentPos
+        arView.scene.anchors.append(sceneAnchor)
         
         return arView
         
@@ -150,6 +156,14 @@ struct ARViewContainer: UIViewRepresentable {
     
     func updateUIView(_ arView: ARView, context: Context) {
 
+        
+//        if properties.selecting {
+//            focusSquare.isEnabled = false
+//
+//        } else {
+//            focusSquare.isEnabled = true
+//
+//        }
         
         if properties.tapped {
             place(arView)
@@ -209,7 +223,6 @@ struct ARViewContainer: UIViewRepresentable {
         
     }
 }
-
 
 
 
