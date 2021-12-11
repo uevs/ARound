@@ -37,8 +37,15 @@ struct ContentView: View {
                     }
                     .padding()
                 }
-                Button("3D Text") {
+                Button {
                     //do
+                } label: {
+                    Text("3D Text")
+                        .font(.headline)
+                        .padding()
+                        .frame(minWidth: 0, maxWidth: .infinity)
+
+                        
                 }
                 .padding()
                 .buttonStyle(.borderedProminent)
