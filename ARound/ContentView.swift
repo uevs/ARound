@@ -12,7 +12,7 @@ import FocusEntity
 
 struct ContentView: View {
     
-    @State var properties = (tapped: false, object: 0, text: "", selecting: true)
+    @State var properties = (tapped: false, object: 0, text: "", main: true)
     
     
     var body: some View {
@@ -20,26 +20,30 @@ struct ContentView: View {
         ZStack {
             ARViewContainer(properties: $properties).edgesIgnoringSafeArea(.all)
             
-            if properties.selecting {
-                SelectingView(properties: $properties)
-                    .onAppear(perform: {properties.tapped = false})
+            if properties.main {
+                MainView(properties: $properties)
                 
             } else {
-                PlacingView(properties: $properties)
+                TextView(properties: $properties)
             }
-            
-            
         }
     }
 }
 
-struct SelectingView: View {
+struct MainView: View {
     
-    @Binding var properties: (tapped: Bool, object: Int, text: String, selecting: Bool)
+    @Binding var properties: (tapped: Bool, object: Int, text: String, main: Bool)
     
     var body: some View {
         
         VStack {
+            Text("Tap to place your object!")
+                .font(Font.system(size: 50).bold())
+                .foregroundColor(.white)
+                .padding()
+            
+            Spacer()
+            
             Spacer()
             
             ScrollView(.horizontal, showsIndicators: false) {
@@ -47,7 +51,7 @@ struct SelectingView: View {
                     ForEach(1...5, id:\.self) { i in
                         Button {
                             properties.object = i
-                            properties.selecting.toggle()
+                            properties.tapped.toggle()
                             
                         } label: {
                             RoundedRectangle(cornerRadius: 20)
@@ -62,7 +66,7 @@ struct SelectingView: View {
             
             Button {
                 properties.object = 6
-                properties.selecting.toggle()
+                properties.main.toggle()
                 
             } label: {
                 Text("3D Text")
@@ -75,60 +79,38 @@ struct SelectingView: View {
             .padding()
             .buttonStyle(.borderedProminent)
             
-            
-            
         }
         
     }
 }
 
-struct PlacingView: View {
-    @Binding var properties: (tapped: Bool, object: Int, text: String, selecting: Bool)
-    @FocusState private var fieldIsFocused: Bool
+struct TextView: View {
     
+    @Binding var properties: (tapped: Bool, object: Int, text: String, main: Bool)
+    @FocusState private var fieldIsFocused: Bool
     
     var body: some View {
         
-        if properties.object == 6 {
-            VStack {
-
-                Spacer()
-                TextField("Text", text: $properties.text, prompt: Text("Choose your text"))
-                    .textFieldStyle(.roundedBorder)
-                    .padding()
-                    .focused($fieldIsFocused)
-                
-                Button("Done") {
-                    fieldIsFocused = false
-                }
-                .buttonStyle(.borderedProminent)
-            }
-                
-        } else {
-            VStack {
-                
-            Text("Tap to place your object!")
-                .font(Font.system(size: 50).bold())
-                .foregroundColor(.white)
+        VStack {
+            
+            TextField("Text", text: $properties.text, prompt: Text("Choose your text"))
+                .textFieldStyle(.roundedBorder)
                 .padding()
-
-            Spacer()
-            }
-            .contentShape(Rectangle())
-            .onTapGesture {
+                .focused($fieldIsFocused)
+            
+            Button("Place Text") {
+                fieldIsFocused = false
                 properties.tapped = true
-                properties.selecting = true
+                properties.main = true
             }
+            .buttonStyle(.borderedProminent)
         }
-        
-        
     }
-    
 }
 
 struct ARViewContainer: UIViewRepresentable {
     
-    @Binding var properties: (tapped: Bool, object: Int, text: String, selecting: Bool)
+    @Binding var properties: (tapped: Bool, object: Int, text: String, main: Bool)
     @State var currentPos: SIMD3<Float> = SIMD3()
     
     func makeUIView(context: Context) -> ARView {
@@ -137,7 +119,7 @@ struct ARViewContainer: UIViewRepresentable {
         let session = arView.session
         let focusSquare = FocusEntity(on: arView, focus: .classic)
         currentPos = focusSquare.position
-
+        
         
         // Overlay while scanning the scene
         let coachingOverlay = ARCoachingOverlayView()
@@ -155,19 +137,19 @@ struct ARViewContainer: UIViewRepresentable {
     }
     
     func updateUIView(_ arView: ARView, context: Context) {
-
         
-//        if properties.selecting {
-//            focusSquare.isEnabled = false
-//
-//        } else {
-//            focusSquare.isEnabled = true
-//
-//        }
+        
+        //        if properties.selecting {
+        //            focusSquare.isEnabled = false
+        //
+        //        } else {
+        //            focusSquare.isEnabled = true
+        //
+        //        }
         
         if properties.tapped {
             place(arView)
-
+            
         }
     }
     
