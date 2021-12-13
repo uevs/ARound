@@ -53,10 +53,7 @@ struct ButtonsView: View {
                             .padding()
                             .background(.ultraThinMaterial)
                             .clipShape(RoundedRectangle(cornerRadius: 20))
-
-                        
                     }
-
                 }
                 
                 
@@ -128,15 +125,12 @@ struct MainView: View {
 
                 Text("3D Text")
                     .font(.headline)
-                    .foregroundColor(.primary)
                     .padding()
                     .frame(minWidth: 0, maxWidth: .infinity)
 
             }
             .buttonStyle(MaterialButton())
-            
         }
-        
     }
 }
 
@@ -166,16 +160,13 @@ struct TextView: View {
             } label: {
                 Text("Place Text")
                     .font(.headline)
-                    .foregroundColor(.primary)
+                    .foregroundColor(ar.text == "" ? .secondary : .primary)
                     .padding()
                     .frame(minWidth: 0, maxWidth: .infinity)
                 
             }
             .disabled(ar.text == "")
             .buttonStyle(MaterialButton())
-            
-            
-            
         }
     }
 }
@@ -281,10 +272,9 @@ func place(_ ar: ArModel) {
 struct MaterialButton: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
+            .foregroundColor(.primary)
             .background(.ultraThinMaterial)
             .clipShape(RoundedRectangle(cornerRadius: 20))
-//            .frame(minWidth: 0, maxWidth: .infinity, maxHeight: 80)
-//            .padding(.horizontal, 1)
             .padding()
     }
 }
