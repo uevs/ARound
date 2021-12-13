@@ -11,13 +11,14 @@ import ARKit
 import FocusEntity
 
 struct ContentView: View {
-    
+    @StateObject var ar = ArModel(view: ARView(frame: .zero))
+
     @State var properties = (tapped: false, object: 0, text: "", main: true)
     
     var body: some View {
         
         ZStack {
-            ARViewContainer(properties: $properties).edgesIgnoringSafeArea(.all)
+            ARViewContainer(ar: ar, properties: $properties).edgesIgnoringSafeArea(.all)
             
             ButtonsView(properties: $properties)
             
@@ -31,7 +32,7 @@ struct ContentView: View {
         }
     }
 }
-
+// MARK: - Buttons
 struct ButtonsView: View {
     
     @Binding var properties: (tapped: Bool, object: Int, text: String, main: Bool)
@@ -66,6 +67,8 @@ struct ButtonsView: View {
         }
     }
 }
+
+// MARK: - Main View
 
 struct MainView: View {
     
@@ -121,6 +124,9 @@ struct MainView: View {
     }
 }
 
+// MARK: - Text View
+
+
 struct TextView: View {
     
     @Binding var properties: (tapped: Bool, object: Int, text: String, main: Bool)
@@ -158,14 +164,17 @@ struct TextView: View {
     }
 }
 
+// MARK: - ArView
+
 struct ARViewContainer: UIViewRepresentable {
     
+    @ObservedObject var ar: ArModel
     @Binding var properties: (tapped: Bool, object: Int, text: String, main: Bool)
     @State var currentPos: SIMD3<Float> = SIMD3()
     
     func makeUIView(context: Context) -> ARView {
         print("ARViewContainer")
-        let arView = ARView(frame: .zero)
+        let arView = ar.view
         let session = arView.session
         let focusSquare = FocusEntity(on: arView, focus: .classic)
         currentPos = focusSquare.position

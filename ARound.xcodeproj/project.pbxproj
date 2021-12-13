@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6F1ABE87276795FD005A2C07 /* ArModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1ABE86276795FD005A2C07 /* ArModel.swift */; };
 		6F7EE70D2763A301002DA37D /* ARoundApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F7EE70C2763A301002DA37D /* ARoundApp.swift */; };
 		6F7EE70F2763A301002DA37D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F7EE70E2763A301002DA37D /* ContentView.swift */; };
 		6F7EE7112763A302002DA37D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6F7EE7102763A302002DA37D /* Assets.xcassets */; };
@@ -16,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6F1ABE86276795FD005A2C07 /* ArModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArModel.swift; sourceTree = "<group>"; };
 		6F7EE7092763A301002DA37D /* ARound.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ARound.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F7EE70C2763A301002DA37D /* ARoundApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARoundApp.swift; sourceTree = "<group>"; };
 		6F7EE70E2763A301002DA37D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -57,6 +59,7 @@
 			children = (
 				6F7EE70C2763A301002DA37D /* ARoundApp.swift */,
 				6F7EE70E2763A301002DA37D /* ContentView.swift */,
+				6F1ABE86276795FD005A2C07 /* ArModel.swift */,
 				6F7EE7102763A302002DA37D /* Assets.xcassets */,
 				6F7EE71A2763A3E2002DA37D /* Experience.rcproject */,
 				6F7EE7122763A302002DA37D /* Preview Content */,
@@ -149,6 +152,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6F7EE70F2763A301002DA37D /* ContentView.swift in Sources */,
+				6F1ABE87276795FD005A2C07 /* ArModel.swift in Sources */,
 				6F7EE70D2763A301002DA37D /* ARoundApp.swift in Sources */,
 				6F7EE71B2763A3E2002DA37D /* Experience.rcproject in Sources */,
 			);
