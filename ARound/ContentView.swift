@@ -46,11 +46,17 @@ struct ButtonsView: View {
                     Button {
                         ar.main = true
                     } label: {
-                        Image(systemName: "arrowshape.turn.up.backward.fill")
+                        Image(systemName: "chevron.backward")
                             .resizable()
-                            .foregroundColor(.black)
-                            .frame(width: 25, height: 25)
+                            .foregroundColor(.primary)
+                            .frame(width: 20, height: 20)
+                            .padding()
+                            .background(.ultraThinMaterial)
+                            .clipShape(RoundedRectangle(cornerRadius: 20))
+
+                        
                     }
+
                 }
                 
                 
@@ -61,10 +67,15 @@ struct ButtonsView: View {
                 } label: {
                     Image(systemName: "arrow.counterclockwise")
                         .resizable()
-                        .foregroundColor(.black)
-                        .frame(width: 25, height: 25)
+                        .foregroundColor(.primary)
+                        .frame(width: 20, height: 20)
+                        .padding()
+                        .background(.ultraThinMaterial)
+                        .clipShape(RoundedRectangle(cornerRadius: 20))
                     
                 }
+                .buttonStyle(MaterialButton())
+
             }
             .padding()
             Spacer()
@@ -102,7 +113,7 @@ struct MainView: View {
                                 .fill(.ultraThinMaterial)
                                 .frame(width: 120, height: 120)
                                 .padding(.horizontal, 1)
-                                .overlay(Text("\(i)").foregroundColor(.white))
+                                .overlay(Text("\(i)").foregroundColor(.primary))
                         }
                     }
                 }
@@ -272,8 +283,8 @@ struct MaterialButton: ButtonStyle {
         configuration.label
             .background(.ultraThinMaterial)
             .clipShape(RoundedRectangle(cornerRadius: 20))
-            .frame(minWidth: 0, maxWidth: .infinity, maxHeight: 80)
-            .padding(.horizontal, 1)
+//            .frame(minWidth: 0, maxWidth: .infinity, maxHeight: 80)
+//            .padding(.horizontal, 1)
             .padding()
     }
 }
