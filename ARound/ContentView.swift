@@ -21,8 +21,8 @@ struct ContentView: View {
             
             ButtonsView(ar: ar)
             
-            if ar.view.scene.anchors.contains(where: { $0.name == "start" }) {
-            
+            if ar.start {
+
                 if ar.main {
                     MainView(ar: ar)
                     
@@ -178,32 +178,17 @@ struct ARViewContainer: UIViewRepresentable {
     @ObservedObject var ar: ArModel
     
     func makeUIView(context: Context) -> ARView {
-        print("ARViewContainer")
+
         let arView = ar.view
-        let session = arView.session
         let focusSquare = FocusEntity(on: arView, focus: .classic)
         ar.currentPos = focusSquare.position
         
+        let sceneAnchor = try! Experience.loadEmpty()
+        sceneAnchor.name = "start"
+        sceneAnchor.position = ar.currentPos
+        arView.scene.anchors.append(sceneAnchor)
         
-        // Overlay while scanning the scene
-        let coachingOverlay = ARCoachingOverlayView()
-        coachingOverlay.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        coachingOverlay.session = session
-        coachingOverlay.goal = .horizontalPlane
-        arView.addSubview(coachingOverlay)
-        
-        
-//        let sceneAnchor = try! Experience.loadEmpty()
-//        sceneAnchor.name = "start"
-//        sceneAnchor.position = ar.currentPos
-//        arView.scene.anchors.append(sceneAnchor)
-        
-        let anchor = AnchorEntity(.plane(.any, classification: .any,
-                                                minimumBounds: [0.5, 0.5]))
-        anchor.name = "start"
-        arView.scene.anchors.append(anchor)
-
-        
+        ar.view.addCoaching(ar.coachingOverlay)
         
         return arView
         
@@ -212,6 +197,27 @@ struct ARViewContainer: UIViewRepresentable {
     func updateUIView(_ arView: ARView, context: Context) {
     }
 }
+
+extension ARView: ARCoachingOverlayViewDelegate {
+    
+    func addCoaching(_ coachingOverlay: ARCoachingOverlayView) {
+        let coachingOverlay = ARCoachingOverlayView()
+        coachingOverlay.session = self.session
+        coachingOverlay.delegate = self
+        coachingOverlay.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        coachingOverlay.goal = .horizontalPlane
+        self.addSubview(coachingOverlay)
+    }
+    
+    public func coachingOverlayViewWillActivate(_ coachingOverlayView: ARCoachingOverlayView) {
+        print("Activated")
+    }
+    
+    public func coachingOverlayViewDidDeactivate(_ coachingOverlayView: ARCoachingOverlayView) {
+        print("Deactivated")
+    }
+}
+
 
 // MARK: - Place
 
