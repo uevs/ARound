@@ -19,6 +19,8 @@ struct ContentView: View {
         ZStack {
             ARViewContainer(properties: $properties).edgesIgnoringSafeArea(.all)
             
+            ButtonsView(properties: $properties)
+            
             if properties.main {
                 MainView(properties: $properties)
                     .onAppear(perform: {properties.tapped = false})
@@ -26,6 +28,41 @@ struct ContentView: View {
             } else {
                 TextView(properties: $properties)
             }
+        }
+    }
+}
+
+struct ButtonsView: View {
+    
+    @Binding var properties: (tapped: Bool, object: Int, text: String, main: Bool)
+
+    
+    var body: some View {
+        VStack {
+            HStack {
+                if properties.main == false {
+                    Button {
+                        properties.main = true
+                    } label: {
+                        Image(systemName: "arrowshape.turn.up.backward.fill")
+                            .resizable()
+                            .frame(width: 25, height: 25)
+                    }
+                }
+
+
+                Spacer()
+                Button {
+                    //
+                } label: {
+                    Image(systemName: "arrow.counterclockwise")
+                        .resizable()
+                        .frame(width: 25, height: 25)
+
+                }
+            }
+            .padding()
+            Spacer()
         }
     }
 }
@@ -38,7 +75,7 @@ struct MainView: View {
         
         VStack {
             Text("Tap to place the object!")
-                .font(Font.system(size: 50).bold())
+                .font(Font.system(size: 40).bold())
                 .foregroundColor(.white)
                 .padding()
             
@@ -141,10 +178,12 @@ struct ARViewContainer: UIViewRepresentable {
         coachingOverlay.goal = .horizontalPlane
         arView.addSubview(coachingOverlay)
         
+        
         let sceneAnchor = try! Experience.loadEmpty()
         sceneAnchor.position = currentPos
         arView.scene.anchors.append(sceneAnchor)
-        
+                
+ 
         return arView
         
     }
