@@ -11,7 +11,7 @@ import ARKit
 import FocusEntity
 
 struct ContentView: View {
-
+    
     @StateObject var ar = ArModel(view: ARView(frame: .zero))
     
     var body: some View {
@@ -30,6 +30,7 @@ struct ContentView: View {
         }
     }
 }
+
 // MARK: - Buttons
 struct ButtonsView: View {
     
@@ -47,8 +48,8 @@ struct ButtonsView: View {
                             .frame(width: 25, height: 25)
                     }
                 }
-
-
+                
+                
                 Spacer()
                 
                 Button {
@@ -57,7 +58,7 @@ struct ButtonsView: View {
                     Image(systemName: "arrow.counterclockwise")
                         .resizable()
                         .frame(width: 25, height: 25)
-
+                    
                 }
             }
             .padding()
@@ -111,7 +112,7 @@ struct MainView: View {
                     .font(.headline)
                     .padding()
                     .frame(minWidth: 0, maxWidth: .infinity)
-
+                
             }
             .padding()
             .buttonStyle(.borderedProminent)
@@ -137,7 +138,7 @@ struct TextView: View {
             TextField("", text: $ar.text, prompt: Text("Choose your text"))
                 .textFieldStyle(.roundedBorder)
                 .padding(.horizontal)
-//                .onAppear(perform: {fieldIsFocused = true})
+            //                .onAppear(perform: {fieldIsFocused = true})
                 .focused($fieldIsFocused, equals: true)
             
             Button {
@@ -154,9 +155,9 @@ struct TextView: View {
             .disabled(ar.text == "")
             .padding()
             .buttonStyle(.borderedProminent)
-                
-
-        
+            
+            
+            
         }
     }
 }
@@ -186,8 +187,8 @@ struct ARViewContainer: UIViewRepresentable {
         let sceneAnchor = try! Experience.loadEmpty()
         sceneAnchor.position = ar.currentPos
         arView.scene.anchors.append(sceneAnchor)
-                
- 
+        
+        
         return arView
         
     }
@@ -195,6 +196,8 @@ struct ARViewContainer: UIViewRepresentable {
     func updateUIView(_ arView: ARView, context: Context) {
     }
 }
+
+// MARK: - Place
 
 func place(_ ar: ArModel) {
     
@@ -250,9 +253,3 @@ func place(_ ar: ArModel) {
     
 }
 
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-    }
-}
