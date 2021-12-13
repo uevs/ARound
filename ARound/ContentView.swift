@@ -11,7 +11,7 @@ import ARKit
 import FocusEntity
 
 struct ContentView: View {
-    
+
     @StateObject var ar = ArModel(view: ARView(frame: .zero))
     
     var body: some View {
@@ -21,11 +21,14 @@ struct ContentView: View {
             
             ButtonsView(ar: ar)
             
-            if ar.main {
-                MainView(ar: ar)
-                
-            } else {
-                TextView(ar: ar)
+            if ar.view.scene.anchors.contains(where: { $0.name == "start" }) {
+            
+                if ar.main {
+                    MainView(ar: ar)
+                    
+                } else {
+                    TextView(ar: ar)
+                }
             }
         }
     }
@@ -94,6 +97,7 @@ struct MainView: View {
                             
                         } label: {
                             RoundedRectangle(cornerRadius: 20)
+                                .fill(.ultraThinMaterial)
                                 .frame(width: 120, height: 120)
                                 .padding(.horizontal, 1)
                                 .overlay(Text("\(i)").foregroundColor(.white))
@@ -108,14 +112,15 @@ struct MainView: View {
                 ar.main = false
                 
             } label: {
+
                 Text("3D Text")
                     .font(.headline)
+                    .foregroundColor(.primary)
                     .padding()
                     .frame(minWidth: 0, maxWidth: .infinity)
-                
+
             }
-            .padding()
-            .buttonStyle(.borderedProminent)
+            .buttonStyle(MaterialButton())
             
         }
         
@@ -148,13 +153,13 @@ struct TextView: View {
             } label: {
                 Text("Place Text")
                     .font(.headline)
+                    .foregroundColor(.primary)
                     .padding()
                     .frame(minWidth: 0, maxWidth: .infinity)
                 
             }
             .disabled(ar.text == "")
-            .padding()
-            .buttonStyle(.borderedProminent)
+            .buttonStyle(MaterialButton())
             
             
             
@@ -184,9 +189,16 @@ struct ARViewContainer: UIViewRepresentable {
         arView.addSubview(coachingOverlay)
         
         
-        let sceneAnchor = try! Experience.loadEmpty()
-        sceneAnchor.position = ar.currentPos
-        arView.scene.anchors.append(sceneAnchor)
+//        let sceneAnchor = try! Experience.loadEmpty()
+//        sceneAnchor.name = "start"
+//        sceneAnchor.position = ar.currentPos
+//        arView.scene.anchors.append(sceneAnchor)
+        
+        let anchor = AnchorEntity(.plane(.any, classification: .any,
+                                                minimumBounds: [0.5, 0.5]))
+        anchor.name = "start"
+        arView.scene.anchors.append(anchor)
+
         
         
         return arView
@@ -253,3 +265,13 @@ func place(_ ar: ArModel) {
     
 }
 
+struct MaterialButton: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .background(.ultraThinMaterial)
+            .clipShape(RoundedRectangle(cornerRadius: 20))
+            .frame(minWidth: 0, maxWidth: .infinity, maxHeight: 80)
+            .padding(.horizontal, 1)
+            .padding()
+    }
+}
