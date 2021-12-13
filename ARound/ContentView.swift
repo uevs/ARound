@@ -23,7 +23,6 @@ struct ContentView: View {
             
             if ar.main {
                 MainView(ar: ar)
-                    .onAppear(perform: {ar.tapped = false})
                 
             } else {
                 TextView(ar: ar)
@@ -35,7 +34,6 @@ struct ContentView: View {
 struct ButtonsView: View {
     
     @ObservedObject var ar: ArModel
-
     
     var body: some View {
         VStack {
@@ -52,6 +50,7 @@ struct ButtonsView: View {
 
 
                 Spacer()
+                
                 Button {
                     //
                 } label: {
@@ -90,8 +89,7 @@ struct MainView: View {
                     ForEach(1...5, id:\.self) { i in
                         Button {
                             ar.object = i
-                            ar.tapped.toggle()
-                        
+                            place(ar)
                             
                         } label: {
                             RoundedRectangle(cornerRadius: 20)
@@ -143,7 +141,7 @@ struct TextView: View {
                 .focused($fieldIsFocused, equals: true)
             
             Button {
-                ar.tapped = true
+                place(ar)
                 ar.main = true
                 
             } label: {
@@ -168,14 +166,13 @@ struct TextView: View {
 struct ARViewContainer: UIViewRepresentable {
     
     @ObservedObject var ar: ArModel
-    @State var currentPos: SIMD3<Float> = SIMD3()
     
     func makeUIView(context: Context) -> ARView {
         print("ARViewContainer")
         let arView = ar.view
         let session = arView.session
         let focusSquare = FocusEntity(on: arView, focus: .classic)
-        currentPos = focusSquare.position
+        ar.currentPos = focusSquare.position
         
         
         // Overlay while scanning the scene
@@ -187,7 +184,7 @@ struct ARViewContainer: UIViewRepresentable {
         
         
         let sceneAnchor = try! Experience.loadEmpty()
-        sceneAnchor.position = currentPos
+        sceneAnchor.position = ar.currentPos
         arView.scene.anchors.append(sceneAnchor)
                 
  
@@ -196,74 +193,62 @@ struct ARViewContainer: UIViewRepresentable {
     }
     
     func updateUIView(_ arView: ARView, context: Context) {
-        
-        
-        //        if properties.selecting {
-        //            focusSquare.isEnabled = false
-        //
-        //        } else {
-        //            focusSquare.isEnabled = true
-        //
-        //        }
-        
-        if ar.tapped {
-            place(arView)
-        }
-    }
-    
-    func place(_ arView: ARView) {
-        
-        switch ar.object {
-        case 1:
-            let choosenObj = try! Experience.load_1()
-            choosenObj.position = currentPos
-            arView.scene.anchors.append(choosenObj)
-            
-        case 2:
-            let choosenObj = try! Experience.load_2()
-            choosenObj.position = currentPos
-            arView.scene.anchors.append(choosenObj)
-            
-        case 3:
-            let choosenObj = try! Experience.load_3()
-            choosenObj.position = currentPos
-            arView.scene.anchors.append(choosenObj)
-            
-        case 4:
-            let choosenObj = try! Experience.load_4()
-            choosenObj.position = currentPos
-            arView.scene.anchors.append(choosenObj)
-            
-        case 5:
-            let choosenObj = try! Experience.load_5()
-            choosenObj.position = currentPos
-            arView.scene.anchors.append(choosenObj)
-            
-        case 6:
-            let choosenObj = try! Experience.loadText()
-            let textEntity: Entity = choosenObj.text!.children[0].children[0]
-            var textModelComponent: ModelComponent = (textEntity.components[ModelComponent.self])!
-            textModelComponent.mesh = .generateText(ar.text,
-                                                    extrusionDepth: 0.03,
-                                                    font: .boldSystemFont(ofSize: 0.1),
-                                                    containerFrame: CGRect.zero,
-                                                    alignment: .center,
-                                                    lineBreakMode: .byCharWrapping)
-            
-            choosenObj.children[0].children[0].components.set(textModelComponent)
-            choosenObj.position = currentPos
-            arView.scene.anchors.append(choosenObj)
-            
-        default:
-            let choosenObj = try! Experience.loadEmpty()
-            choosenObj.position = currentPos
-            arView.scene.anchors.append(choosenObj)
-            
-        }
-        
     }
 }
 
+func place(_ ar: ArModel) {
+    
+    let arView = ar.view
+    
+    switch ar.object {
+    case 1:
+        let choosenObj = try! Experience.load_1()
+        choosenObj.position = ar.currentPos
+        arView.scene.anchors.append(choosenObj)
+        
+    case 2:
+        let choosenObj = try! Experience.load_2()
+        choosenObj.position = ar.currentPos
+        arView.scene.anchors.append(choosenObj)
+        
+    case 3:
+        let choosenObj = try! Experience.load_3()
+        choosenObj.position = ar.currentPos
+        arView.scene.anchors.append(choosenObj)
+        
+    case 4:
+        let choosenObj = try! Experience.load_4()
+        choosenObj.position = ar.currentPos
+        arView.scene.anchors.append(choosenObj)
+        
+    case 5:
+        let choosenObj = try! Experience.load_5()
+        choosenObj.position = ar.currentPos
+        arView.scene.anchors.append(choosenObj)
+        
+    case 6:
+        let choosenObj = try! Experience.loadText()
+        let textEntity: Entity = choosenObj.text!.children[0].children[0]
+        var textModelComponent: ModelComponent = (textEntity.components[ModelComponent.self])!
+        textModelComponent.mesh = .generateText(ar.text,
+                                                extrusionDepth: 0.03,
+                                                font: .boldSystemFont(ofSize: 0.1),
+                                                containerFrame: CGRect.zero,
+                                                alignment: .center,
+                                                lineBreakMode: .byCharWrapping)
+        
+        choosenObj.children[0].children[0].components.set(textModelComponent)
+        choosenObj.position = ar.currentPos
+        arView.scene.anchors.append(choosenObj)
+        
+    default:
+        let choosenObj = try! Experience.loadEmpty()
+        choosenObj.position = ar.currentPos
+        arView.scene.anchors.append(choosenObj)
+        
+    }
+    
+}
 
 
 struct ContentView_Previews: PreviewProvider {
