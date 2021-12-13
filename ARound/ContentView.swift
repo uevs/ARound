@@ -249,11 +249,12 @@ func place(_ ar: ArModel) {
         let choosenObj = try! Experience.loadText()
         let textEntity: Entity = choosenObj.text!.children[0].children[0]
         var textModelComponent: ModelComponent = (textEntity.components[ModelComponent.self])!
+        print(ar.currentPos.x)
         textModelComponent.mesh = .generateText(ar.text,
                                                 extrusionDepth: 0.03,
                                                 font: .boldSystemFont(ofSize: 0.1),
-                                                containerFrame: CGRect.zero,
-                                                alignment: .center,
+                                                containerFrame: .init(x: (Double(ar.text.count) * -0.025), y: Double(ar.currentPos.y), width: 0, height: 0),
+                                                alignment: .left,
                                                 lineBreakMode: .byCharWrapping)
         
         choosenObj.children[0].children[0].components.set(textModelComponent)
