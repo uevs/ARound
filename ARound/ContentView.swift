@@ -97,28 +97,25 @@ struct TextView: View {
             TextField("", text: $properties.text, prompt: Text("Choose your text"))
                 .textFieldStyle(.roundedBorder)
                 .padding(.horizontal)
-                .onAppear(perform: {fieldIsFocused = true})
-                .focused($fieldIsFocused)
+//                .onAppear(perform: {fieldIsFocused = true})
+                .focused($fieldIsFocused, equals: true)
+            
+            Button {
+                properties.tapped = true
+                properties.main = true
                 
-                Button() {
-
-                    properties.tapped = true
-                    properties.main = true
-                    
-                    
-                } label: {
-                    Text("Place Text")
-                        .font(.headline)
-                        .frame(minWidth: 0, maxWidth: .infinity)
-
-                }
-                .padding(.horizontal)
-                .disabled(properties.text == "")
-                .buttonStyle(.borderedProminent)
+            } label: {
+                Text("Place Text")
+                    .font(.headline)
+                    .padding()
+                    .frame(minWidth: 0, maxWidth: .infinity)
                 
-            Spacer()
-            Spacer()
-            Spacer()
+            }
+            .disabled(properties.text == "")
+            .padding()
+            .buttonStyle(.borderedProminent)
+                
+
         
         }
     }
