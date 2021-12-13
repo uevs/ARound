@@ -48,6 +48,7 @@ struct ButtonsView: View {
                     } label: {
                         Image(systemName: "arrowshape.turn.up.backward.fill")
                             .resizable()
+                            .foregroundColor(.black)
                             .frame(width: 25, height: 25)
                     }
                 }
@@ -60,6 +61,7 @@ struct ButtonsView: View {
                 } label: {
                     Image(systemName: "arrow.counterclockwise")
                         .resizable()
+                        .foregroundColor(.black)
                         .frame(width: 25, height: 25)
                     
                 }
@@ -104,7 +106,7 @@ struct MainView: View {
                         }
                     }
                 }
-                .padding()
+                .padding(.horizontal)
             }
             
             Button {
