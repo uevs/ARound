@@ -11,23 +11,22 @@ import ARKit
 import FocusEntity
 
 struct ContentView: View {
-    @StateObject var ar = ArModel(view: ARView(frame: .zero))
 
-    @State var properties = (tapped: false, object: 0, text: "", main: true)
+    @StateObject var ar = ArModel(view: ARView(frame: .zero))
     
     var body: some View {
         
         ZStack {
-            ARViewContainer(ar: ar, properties: $properties).edgesIgnoringSafeArea(.all)
+            ARViewContainer(ar: ar).edgesIgnoringSafeArea(.all)
             
-            ButtonsView(properties: $properties)
+            ButtonsView(ar: ar)
             
-            if properties.main {
-                MainView(properties: $properties)
-                    .onAppear(perform: {properties.tapped = false})
+            if ar.main {
+                MainView(ar: ar)
+                    .onAppear(perform: {ar.tapped = false})
                 
             } else {
-                TextView(properties: $properties)
+                TextView(ar: ar)
             }
         }
     }
@@ -35,15 +34,15 @@ struct ContentView: View {
 // MARK: - Buttons
 struct ButtonsView: View {
     
-    @Binding var properties: (tapped: Bool, object: Int, text: String, main: Bool)
+    @ObservedObject var ar: ArModel
 
     
     var body: some View {
         VStack {
             HStack {
-                if properties.main == false {
+                if ar.main == false {
                     Button {
-                        properties.main = true
+                        ar.main = true
                     } label: {
                         Image(systemName: "arrowshape.turn.up.backward.fill")
                             .resizable()
@@ -72,7 +71,7 @@ struct ButtonsView: View {
 
 struct MainView: View {
     
-    @Binding var properties: (tapped: Bool, object: Int, text: String, main: Bool)
+    @ObservedObject var ar: ArModel
     
     var body: some View {
         
@@ -90,8 +89,8 @@ struct MainView: View {
                 HStack() {
                     ForEach(1...5, id:\.self) { i in
                         Button {
-                            properties.object = i
-                            properties.tapped.toggle()
+                            ar.object = i
+                            ar.tapped.toggle()
                         
                             
                         } label: {
@@ -106,8 +105,8 @@ struct MainView: View {
             }
             
             Button {
-                properties.object = 6
-                properties.main = false
+                ar.object = 6
+                ar.main = false
                 
             } label: {
                 Text("3D Text")
@@ -129,7 +128,7 @@ struct MainView: View {
 
 struct TextView: View {
     
-    @Binding var properties: (tapped: Bool, object: Int, text: String, main: Bool)
+    @ObservedObject var ar: ArModel
     @FocusState private var fieldIsFocused: Bool
     
     var body: some View {
@@ -137,15 +136,15 @@ struct TextView: View {
         VStack {
             Spacer()
             
-            TextField("", text: $properties.text, prompt: Text("Choose your text"))
+            TextField("", text: $ar.text, prompt: Text("Choose your text"))
                 .textFieldStyle(.roundedBorder)
                 .padding(.horizontal)
 //                .onAppear(perform: {fieldIsFocused = true})
                 .focused($fieldIsFocused, equals: true)
             
             Button {
-                properties.tapped = true
-                properties.main = true
+                ar.tapped = true
+                ar.main = true
                 
             } label: {
                 Text("Place Text")
@@ -154,7 +153,7 @@ struct TextView: View {
                     .frame(minWidth: 0, maxWidth: .infinity)
                 
             }
-            .disabled(properties.text == "")
+            .disabled(ar.text == "")
             .padding()
             .buttonStyle(.borderedProminent)
                 
@@ -169,7 +168,6 @@ struct TextView: View {
 struct ARViewContainer: UIViewRepresentable {
     
     @ObservedObject var ar: ArModel
-    @Binding var properties: (tapped: Bool, object: Int, text: String, main: Bool)
     @State var currentPos: SIMD3<Float> = SIMD3()
     
     func makeUIView(context: Context) -> ARView {
@@ -208,14 +206,14 @@ struct ARViewContainer: UIViewRepresentable {
         //
         //        }
         
-        if properties.tapped {
+        if ar.tapped {
             place(arView)
         }
     }
     
     func place(_ arView: ARView) {
         
-        switch properties.object {
+        switch ar.object {
         case 1:
             let choosenObj = try! Experience.load_1()
             choosenObj.position = currentPos
@@ -245,7 +243,7 @@ struct ARViewContainer: UIViewRepresentable {
             let choosenObj = try! Experience.loadText()
             let textEntity: Entity = choosenObj.text!.children[0].children[0]
             var textModelComponent: ModelComponent = (textEntity.components[ModelComponent.self])!
-            textModelComponent.mesh = .generateText(properties.text,
+            textModelComponent.mesh = .generateText(ar.text,
                                                     extrusionDepth: 0.03,
                                                     font: .boldSystemFont(ofSize: 0.1),
                                                     containerFrame: CGRect.zero,
