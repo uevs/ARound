@@ -22,6 +22,7 @@ struct ContentView: View {
             
             if properties.main {
                 MainView(properties: $properties)
+                    .onAppear(perform: {properties.tapped = false})
                 
             } else {
                 TextView(properties: $properties)
@@ -37,7 +38,7 @@ struct MainView: View {
     var body: some View {
         
         VStack {
-            Text("Tap to place your object!")
+            Text("Tap to place the object!")
                 .font(Font.system(size: 50).bold())
                 .foregroundColor(.white)
                 .padding()
@@ -55,7 +56,7 @@ struct MainView: View {
                             
                         } label: {
                             RoundedRectangle(cornerRadius: 20)
-                                .frame(width: 100, height: 100)
+                                .frame(width: 120, height: 120)
                                 .padding(.horizontal, 1)
                                 .overlay(Text("\(i)").foregroundColor(.white))
                         }
@@ -66,7 +67,7 @@ struct MainView: View {
             
             Button {
                 properties.object = 6
-                properties.main.toggle()
+                properties.main = false
                 
             } label: {
                 Text("3D Text")
@@ -92,18 +93,34 @@ struct TextView: View {
     var body: some View {
         
         VStack {
+            Spacer()
             
-            TextField("Text", text: $properties.text, prompt: Text("Choose your text"))
+            TextField("", text: $properties.text, prompt: Text("Choose your text"))
                 .textFieldStyle(.roundedBorder)
-                .padding()
+                .padding(.horizontal)
                 .focused($fieldIsFocused)
+                
+                Button() {
+                    
+                    properties.tapped = true
+                    properties.main = true
+                    
+                } label: {
+                    Text("Place Text")
+                        .font(.headline)
+                        .frame(minWidth: 0, maxWidth: .infinity)
+
+                }
+                .padding(.horizontal)
+                .disabled(properties.text == "")
+                .buttonStyle(.borderedProminent)
+                
             
-            Button("Place Text") {
-                fieldIsFocused = false
-                properties.tapped = true
-                properties.main = true
-            }
-            .buttonStyle(.borderedProminent)
+            Spacer()
+            Spacer()
+            Spacer()
+            
+            
         }
     }
 }
