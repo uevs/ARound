@@ -14,7 +14,6 @@ struct ContentView: View {
     
     @State var properties = (tapped: false, object: 0, text: "", main: true)
     
-    
     var body: some View {
         
         ZStack {
@@ -53,6 +52,7 @@ struct MainView: View {
                         Button {
                             properties.object = i
                             properties.tapped.toggle()
+                        
                             
                         } label: {
                             RoundedRectangle(cornerRadius: 20)
@@ -74,8 +74,7 @@ struct MainView: View {
                     .font(.headline)
                     .padding()
                     .frame(minWidth: 0, maxWidth: .infinity)
-                
-                
+
             }
             .padding()
             .buttonStyle(.borderedProminent)
@@ -98,12 +97,14 @@ struct TextView: View {
             TextField("", text: $properties.text, prompt: Text("Choose your text"))
                 .textFieldStyle(.roundedBorder)
                 .padding(.horizontal)
+                .onAppear(perform: {fieldIsFocused = true})
                 .focused($fieldIsFocused)
                 
                 Button() {
-                    
+
                     properties.tapped = true
                     properties.main = true
+                    
                     
                 } label: {
                     Text("Place Text")
@@ -115,12 +116,10 @@ struct TextView: View {
                 .disabled(properties.text == "")
                 .buttonStyle(.borderedProminent)
                 
-            
             Spacer()
             Spacer()
             Spacer()
-            
-            
+        
         }
     }
 }
@@ -131,7 +130,7 @@ struct ARViewContainer: UIViewRepresentable {
     @State var currentPos: SIMD3<Float> = SIMD3()
     
     func makeUIView(context: Context) -> ARView {
-        
+        print("ARViewContainer")
         let arView = ARView(frame: .zero)
         let session = arView.session
         let focusSquare = FocusEntity(on: arView, focus: .classic)
@@ -166,7 +165,6 @@ struct ARViewContainer: UIViewRepresentable {
         
         if properties.tapped {
             place(arView)
-            
         }
     }
     
