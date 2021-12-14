@@ -24,6 +24,7 @@ struct ARViewContainer: UIViewRepresentable {
     }
     
     func updateUIView(_ arView: ARView, context: Context) {
+
     }
 }
 
