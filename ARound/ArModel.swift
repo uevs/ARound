@@ -12,7 +12,7 @@ import FocusEntity
 
 class ArModel: ARView, ObservableObject {
     
-    @Published var start: Bool = true
+    @Published var start: Bool = false
     @Published var object: Int = 0
     @Published var text: String = ""
     @Published var main: Bool = true
@@ -28,7 +28,8 @@ class ArModel: ARView, ObservableObject {
 //    }
     
     func reset() {
-        
+        self.scene.anchors.removeAll()
+        addFocus()
     }
     
     func addFocus() {
