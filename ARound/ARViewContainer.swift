@@ -15,11 +15,9 @@ struct ARViewContainer: UIViewRepresentable {
     
     func makeUIView(context: Context) -> ARView {
 
-        ar.addFocus()
         ar.addCoaching(ar.coachingOverlay)
 
         let sceneAnchor = try! Experience.loadEmpty()
-        sceneAnchor.position = ar.currentPos
         ar.scene.anchors.append(sceneAnchor)
         
         
@@ -52,6 +50,8 @@ extension ArModel: ARCoachingOverlayViewDelegate {
     
     public func coachingOverlayViewDidDeactivate(_ coachingOverlayView: ARCoachingOverlayView) {
         self.start = true
+        self.addFocus()
+
         print("Deactivated")
     }
 }
