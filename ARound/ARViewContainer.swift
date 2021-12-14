@@ -11,21 +11,19 @@ import ARKit
 import FocusEntity
 
 struct ARViewContainer: UIViewRepresentable {
-    
     @ObservedObject var ar: ArModel
     
     func makeUIView(context: Context) -> ARView {
 
-        let arView = ar.view
         ar.addFocus()
-        ar.view.addCoaching(ar.coachingOverlay)
+        ar.addCoaching(ar.coachingOverlay)
 
         let sceneAnchor = try! Experience.loadEmpty()
         sceneAnchor.position = ar.currentPos
-        arView.scene.anchors.append(sceneAnchor)
+        ar.scene.anchors.append(sceneAnchor)
         
         
-        return arView
+        return ar
         
     }
     
@@ -34,7 +32,7 @@ struct ARViewContainer: UIViewRepresentable {
 }
 
 
-extension ARView: ARCoachingOverlayViewDelegate {
+extension ArModel: ARCoachingOverlayViewDelegate {
     
     func addCoaching(_ coachingOverlay: ARCoachingOverlayView) {
         let coachingOverlay = ARCoachingOverlayView()
@@ -48,12 +46,14 @@ extension ARView: ARCoachingOverlayViewDelegate {
 
     
     public func coachingOverlayViewWillActivate(_ coachingOverlayView: ARCoachingOverlayView) {
-//        start = false
+        self.start = false
         print("Activated")
     }
     
     public func coachingOverlayViewDidDeactivate(_ coachingOverlayView: ARCoachingOverlayView) {
-//        start = true
+        self.start = true
         print("Deactivated")
     }
 }
+
+

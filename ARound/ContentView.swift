@@ -10,7 +10,7 @@ import RealityKit
 
 struct ContentView: View {
 
-    @StateObject var ar = ArModel(view: ARView(frame: .zero))
+    @StateObject var ar = ArModel()
     
     var body: some View {
         
@@ -19,16 +19,18 @@ struct ContentView: View {
             
             ButtonsView(ar: ar)
             
-            if ar.start {
-
-                if ar.main {
                     MainView(ar: ar)
-                    
-                } else {
+                        .hidden(!ar.start || !ar.main)
                     TextView(ar: ar)
-                }
-            }
+                        .hidden(!ar.start || ar.main)
+            
         }
+    }
+}
+
+extension View {
+    func hidden(_ isHidden: Bool) -> some View {
+        opacity(isHidden ? 0 : 1).disabled(isHidden)
     }
 }
 

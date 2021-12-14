@@ -10,64 +10,62 @@ import RealityKit
 import ARKit
 import FocusEntity
 
-class ArModel: ObservableObject {
+class ArModel: ARView, ObservableObject {
     
     @Published var start: Bool = true
     @Published var object: Int = 0
     @Published var text: String = ""
     @Published var main: Bool = true
-    
-    @Published var archive: [UUID] = []
-        
-    @Published var view: ARView
+            
+//    @Published var view: ARView
     @Published var coachingOverlay = ARCoachingOverlayView()
 
     @Published var currentPos: SIMD3<Float> = SIMD3()
-    
-        
-    init(view: ARView) {
-        self.view = view
-    }
+//
+//
+//    init(view: ARView) {
+//        self.view = view
+//    }
     
     func reset() {
-
+        
     }
     
     func addFocus() {
-        let focusSquare = FocusEntity(on: self.view, focus: .classic)
+        let focusSquare = FocusEntity(on: self, focus: .classic)
         self.currentPos = focusSquare.position
     }
     
     
     func place() {
         
-        let arView = self.view
+//        let arView = self
         
         switch self.object {
         case 1:
             let choosenObj = try! Experience.load_1()
             choosenObj.position = self.currentPos
-            arView.scene.anchors.append(choosenObj)
+            self.scene.anchors.append(choosenObj)
             
         case 2:
             let choosenObj = try! Experience.load_2()
             choosenObj.position = self.currentPos
-            arView.scene.anchors.append(choosenObj)
+            self.scene.anchors.append(choosenObj)
             
         case 3:
             let choosenObj = try! Experience.load_3()
             choosenObj.position = self.currentPos
-            arView.scene.anchors.append(choosenObj)
+            self.scene.anchors.append(choosenObj)
             
         case 4:
             let choosenObj = try! Experience.load_4()
             choosenObj.position = self.currentPos
-            arView.scene.anchors.append(choosenObj)
+            self.scene.anchors.append(choosenObj)
             
         case 5:
             let choosenObj = try! Experience.load_5()
             choosenObj.position = self.currentPos
-            arView.scene.anchors.append(choosenObj)
+            self.scene.anchors.append(choosenObj)
             
         case 6:
             let choosenObj = try! Experience.loadText()
@@ -83,12 +81,12 @@ class ArModel: ObservableObject {
             
             choosenObj.children[0].children[0].components.set(textModelComponent)
             choosenObj.position = self.currentPos
-            arView.scene.anchors.append(choosenObj)
+            self.scene.anchors.append(choosenObj)
             
         default:
             let choosenObj = try! Experience.loadEmpty()
             choosenObj.position = self.currentPos
-            arView.scene.anchors.append(choosenObj)
+            self.scene.anchors.append(choosenObj)
             
             
         }
@@ -96,3 +94,5 @@ class ArModel: ObservableObject {
     }
     
 }
+
+
