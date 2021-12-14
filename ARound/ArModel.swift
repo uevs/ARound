@@ -17,28 +17,25 @@ class ArModel: ObservableObject {
     @Published var text: String = ""
     @Published var main: Bool = true
     
+    @Published var archive: [UUID] = []
+        
     @Published var view: ARView
     @Published var coachingOverlay = ARCoachingOverlayView()
 
     @Published var currentPos: SIMD3<Float> = SIMD3()
     
-    var focusSquare: FocusEntity?
         
     init(view: ARView) {
         self.view = view
     }
     
     func reset() {
-        
-        focusSquare!.destroy()
-        focusSquare = FocusEntity(on: self.view, focus: .classic)
-        self.currentPos = focusSquare!.position
 
     }
     
     func addFocus() {
-        focusSquare = FocusEntity(on: self.view, focus: .classic)
-        self.currentPos = focusSquare!.position
+        let focusSquare = FocusEntity(on: self.view, focus: .classic)
+        self.currentPos = focusSquare.position
     }
     
     
@@ -92,6 +89,7 @@ class ArModel: ObservableObject {
             let choosenObj = try! Experience.loadEmpty()
             choosenObj.position = self.currentPos
             arView.scene.anchors.append(choosenObj)
+            
             
         }
         
