@@ -20,9 +20,7 @@ struct ARViewContainer: UIViewRepresentable {
         let sceneAnchor = try! Experience.loadEmpty()
         ar.scene.anchors.append(sceneAnchor)
         
-        
         return ar
-        
     }
     
     func updateUIView(_ arView: ARView, context: Context) {
@@ -30,30 +28,6 @@ struct ARViewContainer: UIViewRepresentable {
 }
 
 
-extension ArModel: ARCoachingOverlayViewDelegate {
-    
-    func addCoaching(_ coachingOverlay: ARCoachingOverlayView) {
-        let coachingOverlay = ARCoachingOverlayView()
-        coachingOverlay.session = self.session
-        coachingOverlay.delegate = self
-        coachingOverlay.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        coachingOverlay.goal = .horizontalPlane
-        self.addSubview(coachingOverlay)
-    }
-    
 
-    
-    public func coachingOverlayViewWillActivate(_ coachingOverlayView: ARCoachingOverlayView) {
-        self.start = false
-        print("Activated")
-    }
-    
-    public func coachingOverlayViewDidDeactivate(_ coachingOverlayView: ARCoachingOverlayView) {
-        self.start = true
-        self.addFocus()
-
-        print("Deactivated")
-    }
-}
 
 

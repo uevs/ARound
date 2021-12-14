@@ -18,6 +18,7 @@ struct MainView: View {
                 .font(Font.system(size: 40).bold())
                 .foregroundColor(.white)
                 .padding()
+                .hidden(ar.object != 0)
             
             Spacer()
             

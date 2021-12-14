@@ -18,11 +18,11 @@ struct ContentView: View {
             ARViewContainer(ar: ar).edgesIgnoringSafeArea(.all)
             
             ButtonsView(ar: ar)
-            
-                    MainView(ar: ar)
-                        .hidden(!ar.start || !ar.main)
-                    TextView(ar: ar)
-                        .hidden(!ar.start || ar.main)
+                .hidden(!ar.start)
+            MainView(ar: ar)
+                .hidden(!ar.start || !ar.main)
+            TextView(ar: ar)
+                .hidden(!ar.start || ar.main)
             
         }
     }

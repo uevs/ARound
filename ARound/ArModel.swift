@@ -1,5 +1,5 @@
 //
-//  arViewClass.swift.swift
+//  ArModel.swift
 //  ARound
 //
 //  Created by leonardo on 13/12/21.
@@ -16,12 +16,14 @@ class ArModel: ARView, ObservableObject {
     @Published var object: Int = 0
     @Published var text: String = ""
     @Published var main: Bool = true
-            
     @Published var coachingOverlay = ARCoachingOverlayView()
 
     
     func reset() {
         self.scene.anchors.removeAll()
+        object = 0
+        text = ""
+        main = true
         addFocus()
     }
     
@@ -31,7 +33,6 @@ class ArModel: ARView, ObservableObject {
     
     
     func place() {
-        
         
         switch self.object {
         case 1:
@@ -71,12 +72,31 @@ class ArModel: ARView, ObservableObject {
         default:
             let choosenObj = try! Experience.loadEmpty()
             self.scene.anchors.append(choosenObj)
-            
-            
         }
-        
     }
-    
 }
 
 
+extension ArModel: ARCoachingOverlayViewDelegate {
+    
+    func addCoaching(_ coachingOverlay: ARCoachingOverlayView) {
+        let coachingOverlay = ARCoachingOverlayView()
+        coachingOverlay.session = self.session
+        coachingOverlay.delegate = self
+        coachingOverlay.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        coachingOverlay.goal = .horizontalPlane
+        self.addSubview(coachingOverlay)
+    }
+    
+    public func coachingOverlayViewWillActivate(_ coachingOverlayView: ARCoachingOverlayView) {
+        self.start = false
+        print("Activated")
+    }
+    
+    public func coachingOverlayViewDidDeactivate(_ coachingOverlayView: ARCoachingOverlayView) {
+        self.start = true
+        self.addFocus()
+
+        print("Deactivated")
+    }
+}
