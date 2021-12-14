@@ -17,15 +17,13 @@ struct ARViewContainer: UIViewRepresentable {
     func makeUIView(context: Context) -> ARView {
 
         let arView = ar.view
-        let focusSquare = FocusEntity(on: arView, focus: .classic)
-        ar.currentPos = focusSquare.position
-        
+        ar.addFocus()
+        ar.view.addCoaching(ar.coachingOverlay)
+
         let sceneAnchor = try! Experience.loadEmpty()
-        sceneAnchor.name = "start"
         sceneAnchor.position = ar.currentPos
         arView.scene.anchors.append(sceneAnchor)
         
-        ar.view.addCoaching(ar.coachingOverlay)
         
         return arView
         
@@ -46,6 +44,8 @@ extension ARView: ARCoachingOverlayViewDelegate {
         coachingOverlay.goal = .horizontalPlane
         self.addSubview(coachingOverlay)
     }
+    
+
     
     public func coachingOverlayViewWillActivate(_ coachingOverlayView: ARCoachingOverlayView) {
 //        start = false

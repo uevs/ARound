@@ -8,6 +8,7 @@
 import Foundation
 import RealityKit
 import ARKit
+import FocusEntity
 
 class ArModel: ObservableObject {
     
@@ -21,9 +22,25 @@ class ArModel: ObservableObject {
 
     @Published var currentPos: SIMD3<Float> = SIMD3()
     
+    var focusSquare: FocusEntity?
+        
     init(view: ARView) {
         self.view = view
     }
+    
+    func reset() {
+        
+        focusSquare!.destroy()
+        focusSquare = FocusEntity(on: self.view, focus: .classic)
+        self.currentPos = focusSquare!.position
+
+    }
+    
+    func addFocus() {
+        focusSquare = FocusEntity(on: self.view, focus: .classic)
+        self.currentPos = focusSquare!.position
+    }
+    
     
     func place() {
         

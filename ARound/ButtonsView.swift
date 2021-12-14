@@ -31,7 +31,7 @@ struct ButtonsView: View {
                 Spacer()
                 
                 Button {
-                    //
+                    ar.reset()
                 } label: {
                     Image(systemName: "arrow.counterclockwise")
                         .foregroundColor(.primary)
