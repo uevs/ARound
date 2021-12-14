@@ -41,13 +41,12 @@ struct ButtonsView: View {
     
     var body: some View {
         VStack {
-            HStack {
+            HStack(alignment: .center) {
                 if ar.main == false {
                     Button {
                         ar.main = true
                     } label: {
                         Image(systemName: "chevron.backward")
-                            .resizable()
                             .foregroundColor(.primary)
                             .frame(width: 20, height: 20)
                             .padding()
@@ -63,7 +62,6 @@ struct ButtonsView: View {
                     //
                 } label: {
                     Image(systemName: "arrow.counterclockwise")
-                        .resizable()
                         .foregroundColor(.primary)
                         .frame(width: 20, height: 20)
                         .padding()
@@ -71,10 +69,9 @@ struct ButtonsView: View {
                         .clipShape(RoundedRectangle(cornerRadius: 20))
                     
                 }
-                .buttonStyle(MaterialButton())
 
             }
-            .padding()
+            .padding(.horizontal)
             Spacer()
         }
     }
@@ -210,10 +207,12 @@ extension ARView: ARCoachingOverlayViewDelegate {
     }
     
     public func coachingOverlayViewWillActivate(_ coachingOverlayView: ARCoachingOverlayView) {
+//        start = false
         print("Activated")
     }
     
     public func coachingOverlayViewDidDeactivate(_ coachingOverlayView: ARCoachingOverlayView) {
+//        start = true
         print("Deactivated")
     }
 }

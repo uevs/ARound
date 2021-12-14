@@ -11,7 +11,7 @@ import ARKit
 
 class ArModel: ObservableObject {
     
-    @Published var start: Bool = false
+    @Published var start: Bool = true
     @Published var object: Int = 0
     @Published var text: String = ""
     @Published var main: Bool = true
