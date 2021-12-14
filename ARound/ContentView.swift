@@ -100,7 +100,7 @@ struct MainView: View {
                     ForEach(1...5, id:\.self) { i in
                         Button {
                             ar.object = i
-                            place(ar)
+                            ar.place()
                             
                         } label: {
                             RoundedRectangle(cornerRadius: 20)
@@ -151,7 +151,7 @@ struct TextView: View {
                 .focused($fieldIsFocused, equals: true)
             
             Button {
-                place(ar)
+                ar.place()
                 ar.main = true
                 
             } label: {
@@ -220,60 +220,7 @@ extension ARView: ARCoachingOverlayViewDelegate {
 
 // MARK: - Place
 
-func place(_ ar: ArModel) {
-    
-    let arView = ar.view
-    
-    switch ar.object {
-    case 1:
-        let choosenObj = try! Experience.load_1()
-        choosenObj.position = ar.currentPos
-        arView.scene.anchors.append(choosenObj)
-        
-    case 2:
-        let choosenObj = try! Experience.load_2()
-        choosenObj.position = ar.currentPos
-        arView.scene.anchors.append(choosenObj)
-        
-    case 3:
-        let choosenObj = try! Experience.load_3()
-        choosenObj.position = ar.currentPos
-        arView.scene.anchors.append(choosenObj)
-        
-    case 4:
-        let choosenObj = try! Experience.load_4()
-        choosenObj.position = ar.currentPos
-        arView.scene.anchors.append(choosenObj)
-        
-    case 5:
-        let choosenObj = try! Experience.load_5()
-        choosenObj.position = ar.currentPos
-        arView.scene.anchors.append(choosenObj)
-        
-    case 6:
-        let choosenObj = try! Experience.loadText()
-        let textEntity: Entity = choosenObj.text!.children[0].children[0]
-        var textModelComponent: ModelComponent = (textEntity.components[ModelComponent.self])!
-        print(ar.currentPos.x)
-        textModelComponent.mesh = .generateText(ar.text,
-                                                extrusionDepth: 0.03,
-                                                font: .boldSystemFont(ofSize: 0.1),
-                                                containerFrame: .init(x: (Double(ar.text.count) * -0.025), y: Double(ar.currentPos.y), width: 0, height: 0),
-                                                alignment: .left,
-                                                lineBreakMode: .byCharWrapping)
-        
-        choosenObj.children[0].children[0].components.set(textModelComponent)
-        choosenObj.position = ar.currentPos
-        arView.scene.anchors.append(choosenObj)
-        
-    default:
-        let choosenObj = try! Experience.loadEmpty()
-        choosenObj.position = ar.currentPos
-        arView.scene.anchors.append(choosenObj)
-        
-    }
-    
-}
+
 
 struct MaterialButton: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
