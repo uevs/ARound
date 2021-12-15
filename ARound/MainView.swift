@@ -26,7 +26,7 @@ struct MainView: View {
             
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack() {
-                    ForEach(1...5, id:\.self) { i in
+                    ForEach(1...6, id:\.self) { i in
                         Button {
                             ar.object = i
                             ar.place()
@@ -44,7 +44,7 @@ struct MainView: View {
             }
             
             Button {
-                ar.object = 6
+                ar.object = 7
                 ar.main = false
                 
             } label: {

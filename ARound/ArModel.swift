@@ -56,6 +56,10 @@ class ArModel: ARView, ObservableObject {
             self.scene.anchors.append(choosenObj)
             
         case 6:
+            let choosenObj = try! Experience.load_6()
+            self.scene.anchors.append(choosenObj)
+            
+        case 7:
             let choosenObj = try! Experience.loadText()
             let textEntity: Entity = choosenObj.text!.children[0].children[0]
             var textModelComponent: ModelComponent = (textEntity.components[ModelComponent.self])!
