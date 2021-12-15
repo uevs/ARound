@@ -36,7 +36,7 @@ struct MainView: View {
                                 .fill(.ultraThinMaterial)
                                 .frame(width: 120, height: 120)
                                 .padding(.horizontal, 1)
-                                .overlay(Text("\(i)").foregroundColor(.primary))
+                                .overlay(Image("\(i)").resizable())
                         }
                     }
                 }
