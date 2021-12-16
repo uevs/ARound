@@ -16,7 +16,7 @@ struct MainView: View {
     var body: some View {
         
         VStack() {
-            Text("Tap an object to pace it!")
+            Text("Tap an object to place it")
                 .font(Font.system(size: 40).bold())
                 .foregroundColor(.white)
                 .padding()

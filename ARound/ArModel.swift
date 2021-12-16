@@ -28,7 +28,7 @@ class ArModel: ARView, ObservableObject {
     }
     
     func addFocus() {
-        _ = FocusEntity(on: self, focus: .classic)
+        _ = FocusEntity(on: self, style: .classic(color: .white))
     }
     
     
