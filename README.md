@@ -7,7 +7,7 @@ The objects collide and can interact with each other.
 
 <p align="center">
     <a href="#" alt="Xcode Version">
-        <img src="https://img.shields.io/static/v1?label=XCode%20Version&message=13.0&color=brightgreen&logo=xcode" alt="Xcode version 13"></a>
+        <img src="https://img.shields.io/static/v1?label=XCode%20Version&message=13&color=brightgreen&logo=xcode" alt="Xcode version 13"></a>
     <a href="#" alt="Swift Version">
         <img src="https://img.shields.io/static/v1?label=Swift%20Version&message=5.5&color=brightgreen&logo=swift" alt="Swift Version 5.5"></a>
     <a href="#" alt="Framework ARKit">
@@ -21,11 +21,11 @@ The objects collide and can interact with each other.
             alt="Framework SwiftUI"></a>     
     <a href="https://github.com/maxxfrazer/FocusEntity" alt="Dependencies">
         <img src="https://img.shields.io/static/v1?label=Depenencies&message=FocusEntity&color=brightgreen" alt="dependencies"></a> 
-    <a href="#" alt="Designed for">
-        <img src="https://img.shields.io/static/v1?label=Designed%20for&message=iPhone%2011&color=brightgreen" alt="designed for"></a>  
-    <a href="#" alt="Built for">
+    <a href="#" alt="Designed for iPhone and iPad">
+        <img src="https://img.shields.io/static/v1?label=Designed%20for&message=iPhone%20iPad&color=brightgreen" alt="designed for iPhone and iPad"></a>  
+    <a href="#" alt="Built for iOS 15">
         <img src="https://img.shields.io/static/v1?label=Built%20for&message=iOS%2015&color=brightgreen"
-            alt="built for"></a>
+            alt="built for iOS 15"></a>
 </p>
 
 ## About
