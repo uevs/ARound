@@ -9,12 +9,14 @@ import SwiftUI
 
 struct MainView: View {
     
+    @Environment(\.horizontalSizeClass) var sizeClass
+    
     @ObservedObject var ar: ArModel
     
     var body: some View {
         
-        VStack {
-            Text("Tap to place the object!")
+        VStack() {
+            Text("Tap an object to pace it!")
                 .font(Font.system(size: 40).bold())
                 .foregroundColor(.white)
                 .padding()
@@ -34,7 +36,7 @@ struct MainView: View {
                         } label: {
                             RoundedRectangle(cornerRadius: 20)
                                 .fill(.ultraThinMaterial)
-                                .frame(width: 120, height: 120)
+                                .frame(width: sizeClass == .regular ? 171 : 120, height: sizeClass == .regular ? 171 : 120)
                                 .padding(.horizontal, 1)
                                 .overlay(Image("\(i)").resizable())
                         }
