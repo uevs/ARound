@@ -18,10 +18,11 @@ struct TextView: View {
             Spacer()
             
             TextField("", text: $ar.text, prompt: Text("Choose your text"))
+                .opacity(fieldIsFocused ? 1 :0.5)
                 .textFieldStyle(.roundedBorder)
                 .padding(.horizontal)
-            //                .onAppear(perform: {fieldIsFocused = true})
                 .focused($fieldIsFocused, equals: true)
+
             
             Button {
                 ar.place()
